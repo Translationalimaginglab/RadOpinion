@@ -44,24 +44,6 @@ python .\manage.py runserver 8008
 
 Note: A batch file for deployment is provided in the repository. This can be used on a Windows machine by simply executing the `Deploy.bat` file.
 
-## Contributing
-## Contributing
-
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-Please make sure to update tests as appropriate.
-
-Also, please read our [Contributing Guide](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md) before you begin contributing.
-
-For major changes, please open an issue first to discuss what you would like to change.
-
-
 ## License
 This project is licensed under the terms of the MIT license. See the [LICENSE](LICENSE) file for details.
 
