@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang=en>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <title>Questionnaire</title>
+    <link rel=icon type=image/x-icon href="/static/favicon.svg"/>
+    <link rel=stylesheet href="/static/fontbootstrap/bootstrap-icons.css"/>
+    <link rel=stylesheet type=text/css href="/static/style.css"/>
+    <link rel=stylesheet type=text/css href="/static/drawing.css"/>
+</head>
+
+<body>
+<h2>
+    <i class="bi bi-check2-square"></i>
+    Decision Tree Questioner
+</h2>
+<div class="line-height-double">
+    Welcome
+    <output id=outUser class="bold">{{ data.user }}</output>
+    ( <a href="/logout/" tabindex=7>Log out</a> )
+    <span class="nowrap margin-left3">
+        Progress: <output id=outProgress>{{ data.n_answered }}/{{ data.n_all }}</output>
+        <progress id=prgProgress value="{{ data.n_answered }}" max="{{ data.n_all }}"></progress>
+    </span>
+    <span class="nowrap margin-left3">
+        <label for=rngZoom>Zoom</label>
+        <input type="range" name="zoom" form="form1" id=rngZoom class="zoom" tabindex=8
+               min=50 max=300 step=10 value=100>
+        <output id=outZoom></output> ( <a href="javascript:zoom_reset();">Reset</a> )
+    </span>
+</div>
+<hr>
+<form id=form1 action="/questionnaire/" method="POST" onsubmit="event.preventDefault();">
+    {% csrf_token %}
+    <input type=hidden name="command" value="next">
+    <input type=hidden name="drawing_state">
+    <input type=hidden name="question_number" value='{{ q_item.question.number }}'>
+    <input type=hidden name="dicom" value='{{ data.q_item.dicom }}'>
+    dicom:
+    <output id=outDicom class="bold">{{ data.q_item.dicom }}</output>
+    <div id=divQuestion></div>
+    <div id=divChoices></div>
+    <div class="btn-group">
+        <input type="button" name="previous" class="btn" tabindex=2 value="Previous">
+        <input type="submit" name="next" class="btn" tabindex=3 value="Next">
+    </div>
+    <input type="button" name="first-unanswered" class="btn" tabindex=4 value="First unanswered">
+</form>
+
+<label> <input type="radio" id=Scroll name="radioTool" checked> Slide </label>
+<label>(<input type="checkbox" id=chkTogether> Slide together)</label>
+<label> <input type="radio" id=WindowLevel name="radioTool"> Brightness </label>
+( <a href="javascript:reset_display();">Reset</a> )
+<label> <input type="radio" id=Draw name="radioTool"> Ruler </label>
+( <a href="javascript:clear_drawings();">Clear Drawings</a> )
+<br>
+
+<div class="dicomGroup">
+    {% for sequence in data.dicomSequences %}
+        <div class="dicomContainer">
+            &nbsp; {{ sequence.name }} <br>
+            <div id=layerContainer{{ forloop.counter0 }} class="layerGroup"></div>
+        </div>
+    {% endfor %}
+</div>
+
+<script type=text/javascript src="/static/konva.min.js"></script>
+<script type=text/javascript src="/static/i18next.min.js"></script>
+<script type=text/javascript src="/static/dwv-0.30.8.min.js"></script>
+<script type=text/javascript src="/static/dicom-viewer.js"></script>
+<script type=text/javascript src="/static/questionnaire.js"></script>
+{{ data|json_script:"json_data" }}
+<script type=text/javascript>
+    let dicomURLs = []
+    "{% for sequence in data.dicomSequences %}"
+        dicomURLs.push("{{ sequence.files }}".split(" | "));
+        "{% endfor %}"
+    init_dwvApps(dicomURLs);
+    revise_html(JSON.parse(json_data.text));
+</script>
+</body>
+
+</html>

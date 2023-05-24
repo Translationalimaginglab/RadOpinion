@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Questions</title>
+    <link rel=icon href="/static/favicon.svg">
+    <link rel=stylesheet type=text/css href="/static/style.css">
+</head>
+
+<body>
+    <form>
+        <h3>Questions:</h3>
+        {% for q in questions %}
+        <p class="question">
+            {{q.number}}. {{q.text}}<br>
+            {% if q.type == "descriptive" %}
+            <input type=text placeholder="Write the answer...">
+            {% else %}
+            {% for choice in q.choices %}
+            <input type="radio" name="radio_set" value={{choice}}>{{choice}}
+            </br>
+            {% endfor %}
+            {% endif %}
+        </p>
+        {% endfor %}
+    </form>
+</body>
+
+</html>

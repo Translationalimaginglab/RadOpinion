@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <title>Questionnaire</title>
+    <link rel=icon type=image/x-icon href="/static/favicon.svg" />
+    <link rel=stylesheet href="/static/fontbootstrap/bootstrap-icons.css" />
+    <link rel=stylesheet type=text/css href="/static/style.css" />
+    <style>
+        #maindiv {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .dwc {
+            border: solid red;
+        }
+
+        /* Layers */
+        .layerGroup {
+            width: 100px;
+            height: 100px;
+        }
+
+        .layer {
+            position: absolute;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main container div -->
+    <div id="maindiv">
+        <div class="dwc">
+            <div id="layerGroup0" class="layerGroup"></div>
+        </div>
+        <div class="dwc">
+            <div id="layerGroup1" class="layerGroup"></div>
+        </div>
+    </div>
+    <!-- <img id=img1 src="https://www.chessable.com/static/media/goal.ae98022e54ac98d61431.png"> -->
+    <script type=text/javascript src="/static/konva.min.js"></script>
+    <script type=text/javascript src="/static/i18next.min.js"></script>
+    <script type=text/javascript src="/static/dwv-0.30.8.min.js"></script>
+    <script>
+
+        function promise_manipulate() {
+            let f2 = function (arg) {
+                return (arg + " bar");
+
+                const myPromise = new Promise((resolve, reject) => {
+                    setTimeout(() => { resolve("foo"); }, 500);
+                    setTimeout(() => { Promise.reject("baz") }, 300);
+                });
+                p = myPromise.then(f2, f2).catch();
+                setTimeout(() => console.log(p), 400);
+                console.log(Promise.reject("baz"));
+            }
+        }
+
+        function image_load() {
+            console.log(img1.crossOrigin);
+            img1.src = "https://www.chessable.com/static/media/logo_new.54bd67b40fc86e2a614566d9b42aab53.svg"
+
+            console.log(img1.crossOrigin);
+            return;
+        }
+
+        var app = [];
+        function loaddwvApp() {
+            for (const i in [0, 1,]) {
+                app[i] = new dwv.App();
+                app[i].init({
+                    dataViewConfigs: { "*": [{ divId: "layerGroup" + i }] },
+                    tools: {
+                        WindowLevel: {},
+                        Draw: { options: ["Ruler"], type: "factory" },
+                    },
+                });
+                app[i].addEventListener('load', function () {
+                    app[i].setTool('Draw');
+                    app[i].setDrawShape('Ruler');
+                });
+                app[i].addEventListener("drawcreate", function () {
+                    console.log("drawcreate");
+                });
+                let urls = ["/static/dicom-data/31-60/1/31.dcm", "/static/dicom-data/31-60/1/32.dcm", "/static/dicom-data/31-60/1/33.dcm"];
+                app[i].loadURLs(urls);
+            }
+        }
+        const i = 0;
+        let wdth = 100;
+
+        function fuckit() {
+            const observer = new MutationObserver(() => {
+                console.log('holayyyyyy');
+            });
+
+            observer.observe(layerGroup0, {
+                childList: true,
+                // subtree: true,
+                // attributes: true,
+                // characterData: true
+            });
+            console.log('fuckit');
+            loaddwvApp();
+        }
+
+
+        function feckit() {
+            app[i].deleteDraws();
+            // app[i].resetDisplay();
+
+            console.log('fuckit');
+            console.log(app[i].getDrawDisplayDetails());
+            let drawingarray = app[i].getDrawDisplayDetails();
+            let item = drawingarray.pop();
+            console.log(item.meta.quantification.length.value);
+            console.log(app[i].getDrawStoreDetails()
+            );
+        }
+
+        var myDrawDisplayDetails;
+        var myDrawStoreDetails;
+        var myState;
+
+        function save_state() {
+            myDrawDisplayDetails = app[i].getDrawDisplayDetails();
+            console.log("myDrawDisplayDetails", myDrawDisplayDetails);
+            console.log("myDrawStoreDetails", myDrawStoreDetails);
+            myDrawStoreDetails = app[i].getDrawStoreDetails()
+            myState = app[i].getState();
+            console.log("state", myState);
+        }
+        function load_state() {
+            var state = new dwv.io.State();
+            var jsonData = state.fromJSON(myState);
+            console.log('tt', jsonData.drawings);
+            console.log(app[i].getDrawStoreDetails());
+            console.log(app[i].getDrawDisplayDetails());
+
+            app[i].setDrawings(jsonData.drawings, jsonData.drawingsDetails);
+        }
+
+
+    </script>
+    <button onclick="fuckit()">fuck it</button>
+    <button onclick="save_state()">save state</button>
+    <button onclick="load_state()">load state</button>
+</body>
+
+</html>

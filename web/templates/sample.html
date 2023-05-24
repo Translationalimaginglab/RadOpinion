@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <title>Questionnaire</title>
+    <link rel=icon type=image/x-icon href="/static/favicon.svg"/>
+    <link rel=stylesheet href="/static/fontbootstrap/bootstrap-icons.css"/>
+    <link rel=stylesheet type=text/css href="/static/style.css"/>
+    <style>
+        #maindiv {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .dwc {
+            border: solid red;
+        }
+
+        /* Layers */
+        .layerGroup {
+            width: 100px;
+            height: 100px;
+        }
+
+        .layer {
+            position: absolute;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Main container div -->
+<div id="maindiv">
+    <div class="dwc">
+        <div id="layerGroup0" class="layerGroup"></div>
+    </div>
+    <div class="dwc">
+        <div id="layerGroup1" class="layerGroup"></div>
+    </div>
+</div>
+<script type="text/javascript" src="/static/konva.min.js"></script>
+<script type="text/javascript" src="/static/i18next.min.js"></script>
+<script type="text/javascript" src="/static/dwv-0.30.8.min.js"></script>
+<script>
+    var app = [];
+
+    function load_dwvApp() {
+        for (const i in [0, 1,]) {
+            app[i] = new dwv.App();
+            app[i].init({
+                dataViewConfigs: {"*": [{divId: "layerGroup" + i}]},
+                tools: {
+                    WindowLevel: {},
+                    Draw: {options: ["Ruler"], type: "factory"},
+                },
+            });
+            app[i].addEventListener('load', function () {
+                app[i].setTool('Draw');
+                app[i].setDrawShape('Ruler');
+            });
+            app[i].addEventListener("drawcreate", function () {
+                console.log("drawcreate");
+            });
+            let urls = ["/static/dicom-data/31-60/1/31.dcm", "/static/dicom-data/31-60/1/32.dcm", "/static/dicom-data/31-60/1/33.dcm"];
+            app[i].loadURLs(urls);
+        }
+    }
+
+    load_dwvApp();
+
+
+</script>
+<script type="module">
+    var loadendPromiseResolve;
+    var loadendPromise = new Promise((resolve, reject) => {
+        promiseResolve = resolve;
+    });
+
+    var loadendThenable = {
+        then(resolve, reject) {
+            promiseResolve = resolve;
+        },
+    };
+
+    btn1.onclick = () => {
+        promiseResolve('all loaded');
+    };
+
+    await loadendThenable;
+    console.log('fuck');
+</script>
+
+<button id=btn1>fuck it</button>
+</body>
+
+</html>
