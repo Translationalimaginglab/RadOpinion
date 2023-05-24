@@ -1,0 +1,72 @@
+body, input {
+    font-size: 14px;
+    font-family: Verdana, Arial, sans-serif;
+}
+input{
+    border: 1px solid silver;
+    border-radius: 4px;
+    padding: 7px;   
+}
+input[type=submit], input[type=button] {
+    background: #417690;
+    color: white;
+    cursor: pointer;
+    padding: 10px 15px;
+    border: none;
+}
+a {
+    line-height: 2em;
+    color: darkred;
+}
+.login {
+    background: #f8f8f8;
+}   
+.login #container {
+    background:white;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 28em;
+    min-width: 300px;
+    margin: 100px auto 10px;
+}
+.login #header {
+    background: #417690;
+    color: #ffc;
+    justify-content: center;
+    display: flex;
+    padding: 15px 0 15px;
+    font-size: 18px;
+}
+.login #content {
+    padding: 20px 30px 0 20px;
+}
+.login label {
+    padding: 10px 0 5px;
+    display: block;
+}
+.login #id_username, .login #id_password {
+    width: 100%;
+    background: LemonChiffon;
+}
+.login #submit {
+    padding: 20px;
+    text-align: center;
+}
+.login #admin {
+    overflow: hidden;
+    width: 26em;
+    min-width: 300px;
+    margin: auto auto; 
+}
+
+.errornote {
+    font-size: 12px;
+    font-weight: bold;
+    display: block;
+    padding: 0 10px;
+    margin: 0 0 10px 0;
+    color: firebrick;
+    border: 1px solid firebrick;
+    border-radius: 4px;
+}

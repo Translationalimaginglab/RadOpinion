@@ -1,0 +1,19 @@
+.dicomGroup {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.dicomContainer {
+    margin: 1rem;
+}
+
+.layerGroup {
+    width: 320px;
+    height: 320px;
+}
+
+.layer {
+    /* necessary for drawing tool */
+    position: absolute;
+    pointer-events: none;
+}
